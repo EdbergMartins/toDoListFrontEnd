@@ -2,7 +2,6 @@
   display: flex;
   align-items: center;
     justify-content: center;
-    height: 690px;
     min-height: calc(100vh - 149px);
 }
 .formLogin {

@@ -13,7 +13,7 @@ const App = ({ user, token, isLoggedIn }) => {
     <div>
       <NavBar />
       <Box style={{
-        'height': '100%', minHeight: '690px', 'scroll': 'scrolla', paddingTop: '10px'
+        'height': '100%', minHeight: 'calc(100vh - 149px)', 'scroll': 'scrolla', paddingTop: '10px',
       }} >
         <BrowserRouter>
           <Routes>
