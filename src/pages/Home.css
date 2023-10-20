@@ -1,0 +1,35 @@
+.pageLogin {
+  display: flex;
+  align-items: center;
+    justify-content: center;
+    height: 690px;
+}
+.formLogin {
+  width: 350px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+    justify-content: center;
+    display: flex;
+    border-radius: 5px;
+    align-items: center;
+  }
+.passwordPlace {
+  font: inherit;
+  border: 1px solid gray;
+  letter-spacing: inherit;
+  color: currentColor;
+  padding: 4px 0 5px;
+  box-sizing: content-box;
+  background: none;
+  height: 1.4375em;
+  display: block;
+  min-width: 0;
+  border-radius: 5px;
+  padding: 16.5px 14px;
+  }
+.passwordPlace:hover {
+  border: 1px solid black;
+
+}
+

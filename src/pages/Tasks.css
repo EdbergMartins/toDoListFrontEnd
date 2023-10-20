@@ -1,0 +1,105 @@
+.home {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px
+}
+
+li {
+  list-style-type: none;
+}
+
+ul {
+  padding: 0;
+
+}
+
+.listPapers {
+  margin: 5px;
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap;
+  padding-left: 5px;
+}
+
+
+.textTitle {
+  width: 100%;
+  overflow: hidden;
+  align-self: center;
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 5px
+}
+
+.textTitle:hover {
+  background-color: #4487ca;
+  cursor: pointer;
+}
+
+.Paper {
+  width: 100%;
+  margin-right: 10px
+}
+
+.Paper h2 {
+  text-align: center
+}
+
+.headerPaper {
+  text-align: center;
+}
+
+.divButton {
+  display: flex;
+  text-align: center;
+  margin: 10px 10px;
+}
+
+.btn {
+  margin-left: 100px;
+}
+
+@media (max-width: 859px) {
+  .home {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .addButton {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    width: 100%;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0px 10px
+  }
+
+  .descriptionField {
+    background-color: #000;
+  }
+
+  .addButton span {
+    margin: 0px 10px
+  }
+
+  .Paper {
+    margin: 10px 0px
+  }
+
+  .textTitle {
+    width: 100%;
+  }
+
+  .listPapers {
+    max-width: 97%;
+  }
+}
+
+@media (max-width: 640px) {
+  .listPapers {
+    max-width: 96%;
+  }
+}

@@ -1,0 +1,11 @@
+.navBar {
+background-color: #4487ca;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  justify-content: center
+}
+.exitButton {
+  color: black;
+  text-align: right
+}
