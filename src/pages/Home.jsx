@@ -145,7 +145,7 @@ const Home = () => {
                     type="password"
                     name="password"
                     label="Password"
-                    placeholder="Descrição"
+                    placeholder="Senha"
                     className='passwordPlace'
                   />
                   <LoadingButton loading={loadingButton} style={{ marginTop: '30px' }} type="submit" variant="contained" color="primary" >
