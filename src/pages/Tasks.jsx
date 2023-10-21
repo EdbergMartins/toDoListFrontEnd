@@ -48,7 +48,9 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
     boxShadow: 24,
     p: 4,
     'overflow': 'scroll',
-    zIndex: '999'
+    zIndex: '999',
+    borderRadius: '25px',
+    overflow: 'hidden'
   };
 
   const validationSchema = Yup.object({
@@ -325,7 +327,7 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
               <h2>Titulo</h2>
               <p>{taskModal.title}</p>
               <h3>Descrição</h3>
-              <p>{taskModal.descrition != null ? taskModal.description : 'Sem descrição cadastrada'}</p>
+              <p>{taskModal.description != null ? taskModal.description : 'Sem descrição cadastrada'}</p>
               <dvi style={{ display: 'flex', 'flex-direction': 'row', 'align-items': 'center' }}>
                 <h4>Data da criação:</h4>
                 <span style={{ 'margin': '0 0 0 5px' }}>{handleData(taskModal.created_at)}</span>

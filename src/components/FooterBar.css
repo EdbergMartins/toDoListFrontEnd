@@ -7,3 +7,10 @@ background-color: #4487ca;
     flex-direction: row;
     justify-content: space-around;
 }
+
+@media (max-width: 450px) {
+  .footer {
+    flex-direction: column-reverse;
+    padding-top: 10px;
+  }
+}
