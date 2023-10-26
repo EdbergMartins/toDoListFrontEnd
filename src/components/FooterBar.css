@@ -6,6 +6,7 @@ background-color: #4487ca;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+        color: white
 }
 
 @media (max-width: 450px) {

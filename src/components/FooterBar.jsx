@@ -9,7 +9,7 @@ const FooterBar = () => {
         <p>
           Projeto voltado para pratica de desenvolvimento fullstack 
         </p>
-        <a style={{ color: 'black' }} href="https://github.com/EdbergMartins" target="_blank" rel="noreferrer">
+        <a style={{ color: 'white' }} href="https://github.com/EdbergMartins" target="_blank" rel="noreferrer">
           <GitHubIcon />
         </a>
       </div>

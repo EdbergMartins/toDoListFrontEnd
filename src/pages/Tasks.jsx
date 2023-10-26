@@ -1,8 +1,9 @@
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { LoadingButton } from '@mui/lab';
-import { Alert, Box, Modal, Paper, Snackbar, TextField } from '@mui/material';
+import { Alert, Box, Button, Modal, Paper, Snackbar, TextField } from '@mui/material';
 import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -10,17 +11,23 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import './Tasks.css';
 
+
 const Tasks = ({ loggedDate, updateLoggedData }) => {
-  const [pendingItens, setPendingItens] = useState([]);
-  const [doingItens, setDoingItens] = useState([]);
-  const [doneItens, setDoneItens] = useState([])
+  const [list, setList] = useState({
+    pendingItens: [{}],
+    doingItens: [{}],
+    doneItens: [{}]
+  })
   const [data, setData] = useState(null)
   const [openModalCreateTask, setOpenModalCreateTask] = useState(false);
+  const [editTask, setEditTask] = useState(false)
   const handleOpen = () => setOpenModalCreateTask(true);
   const handleClose = () => {
     setOpenModalCreateTask(false);
-    setOpenModalViwerTask(false)
+    setOpenModalViwerTask(false);
+    setEditTask(false)
   }
+  const [newDescription, setNewDescription] = useState('')
   const [loadingButton, setLoadingButton] = useState(false)
   const [openModalViwerTask, setOpenModalViwerTask] = useState(false);
   const [taskModal, setTaskModal] = useState({})
@@ -46,7 +53,6 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
-    'overflow': 'scroll',
     zIndex: '999',
     borderRadius: '25px',
     overflow: 'hidden'
@@ -72,13 +78,17 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
       }
     })
       .then((response) => {
-        setPendingItens([...pendingItens, response.data.itemCreated[0]]);
+        const newList = { ...list }
+        const newItem = response.data.itemCreated[0]
+        newList.pendingItens.push(newItem);
+        setList(newList)
         handleClose()
         setLoadingButton(false)
         setOpenSucessModal(true)
       })
       .catch((error) => {
         console.error('Erro:', error);
+        if (error.response.data.message === "Token inválido") logou() 
         setLoadingButton(false)
         setOpenErrorModal(true)
       })
@@ -93,12 +103,71 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
       }
     })
       .then((response) => {
-        setDoneItens(doneItens.filter((i) => i !== task));
+        const newList = { ...list }
+        const itemIndexToRemove = newList.doneItens.findIndex(item => item.id === task.id);
+        if (itemIndexToRemove !== -1) {
+          newList.doneItens.splice(itemIndexToRemove, 1);
+          setList(newList);
+        }
         handleClose()
         setLoadingButton(false)
       })
       .catch((error) => {
         console.error('Erro:', error);
+        if (error.response.data.message === "Token inválido") logou()
+        setLoadingButton(false)
+        setOpenErrorModal(true)
+      })
+  }
+
+  const editDescription = (task, description) => {
+    setLoadingButton(true)
+    const { id } = task
+    axios.post(`${apiLink}/tasks/${description}/${id}`, {
+      headers: {
+        'Authorization': `${token} `,
+      }
+    })
+      .then((response) => {
+        const newList = { ...list }
+        switch (task.status) {
+          case "Pendente":
+            newList.pendingItens.forEach(element => {
+              if (element.id === id) {
+                element.description = description
+                setList(newList)
+              }
+            });
+            break;
+
+          case "Em Andamento":
+            newList.doingItens.forEach(element => {
+              if (element.id === id) {
+                element.description = description
+                setList(newList)
+              }
+            });
+            break;
+
+          case "Concluída":
+            newList.doneItens.forEach(element => {
+              if (element.id === id) {
+                element.description = description
+                setList(newList)
+              }
+            })
+            break;
+
+          default:
+            break;
+        }
+        setEditTask(false)
+        setNewDescription('')
+        setLoadingButton(false)
+      })
+      .catch((error) => {
+        console.error('Erro:', error);
+        if (error.response.data.message === "Token inválido") logou() 
         setLoadingButton(false)
         setOpenErrorModal(true)
       })
@@ -131,16 +200,21 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
                 break;
             }
           }
-          setPendingItens(pendingList)
-          setDoingItens(doingList)
-          setDoneItens(doneList)
+          setList(
+            {
+              pendingItens: pendingList,
+              doingItens: doingList,
+              doneItens: doneList
+            }
+          )
         })
         .catch((error) => {
           console.error('Erro:', error);
+          if (error.response.data.message === "Token inválido") logou() 
           setOpenErrorModal(true)
         });
     }
-  }, [data]);
+  }, [data, apiLink, id, token]);
 
   const handleMoveToDoingItens = (item) => {
     setLoadingButton(true)
@@ -152,12 +226,16 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
       }
     })
       .then((response) => {
-        setPendingItens(pendingItens.filter((i) => i !== item));
-        setDoingItens([...doingItens, item]);
+        const newList = { ...list }
+        const newPendingItens = newList.pendingItens.filter((i) => i !== item)
+        newList.doingItens.push(item)
+        newList.pendingItens = newPendingItens
+        setList(newList)
         setLoadingButton(false)
       })
       .catch((error) => {
         console.error('Erro:', error);
+        if (error.response.data.message === "Token inválido") logou() 
         setLoadingButton(false)
         setOpenErrorModal(true)
       })
@@ -173,12 +251,16 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
       }
     })
       .then((response) => {
-        setDoingItens(doingItens.filter((i) => i !== item));
-        setPendingItens([...pendingItens, item]);
+        const newList = { ...list }
+        const newDoingItens = newList.doingItens.filter((i) => i !== item)
+        newList.pendingItens.push(item)
+        newList.doingItens = newDoingItens
+        setList(newList)
         setLoadingButton(false)
       })
       .catch((error) => {
         console.error('Erro:', error);
+        if (error.response.data.message === "Token inválido") logou() 
         setLoadingButton(false)
         setOpenErrorModal(true)
       })
@@ -194,12 +276,16 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
       }
     })
       .then((response) => {
-        setDoingItens(doingItens.filter((i) => i !== item))
-        setDoneItens([...doneItens, item]);
+        const newList = { ...list }
+        const newDoingItens = newList.doingItens.filter((i) => i !== item)
+        newList.doneItens.push(item)
+        newList.doingItens = newDoingItens
+        setList(newList)
         setLoadingButton(false)
       })
       .catch((error) => {
         console.error('Erro:', error);
+        if (error.response.data.message === "Token inválido") logou() 
         setLoadingButton(false)
         setOpenErrorModal(true)
       })
@@ -215,12 +301,16 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
       }
     })
       .then((response) => {
-        setDoneItens(doneItens.filter((i) => i !== item))
-        setDoingItens([...doingItens, item])
+        const newList = { ...list }
+        const newDoneItens = newList.doneItens.filter((i) => i !== item)
+        newList.doingItens.push(item)
+        newList.doneItens = newDoneItens
+        setList(newList)
         setLoadingButton(false)
       })
       .catch((error) => {
         console.error('Erro:', error);
+        if (error.response.data.message === "Token inválido") logou() 
         setLoadingButton(false)
         setOpenErrorModal(true)
       })
@@ -234,7 +324,7 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
   const handleData = (date) => {
     const data = new Date(date)
     const dia = data.getDate();
-    const mes = data.getMonth() + 1; // Os meses começam em 0 (janeiro é 0)
+    const mes = data.getMonth() + 1; 
     const ano = data.getFullYear();
     const horas = data.getHours();
     const minutos = data.getMinutes();
@@ -260,9 +350,9 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
             Ação executada com seucesso.
           </Alert>
         </Snackbar>
-        <div style={{ 'display': 'flex', 'justify-content': 'space-between' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <LoadingButton
-            style={{ 'margin-left': '20px' }}
+            style={{ marginLeft: '20px' }}
             loading={loadingButton}
             color='primary'
             variant="contained"
@@ -271,7 +361,7 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
             Adicionar Task
           </LoadingButton >
           <LoadingButton
-            style={{ 'margin-right': '26px' }}
+            style={{ marginRight: '26px' }}
             loading={loadingButton}
             color='primary'
             variant="contained"
@@ -297,7 +387,10 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
             >
               {formik => (
                 <Form style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Field style={{ margin: '10px' }} type="text" name="title" label="Titulo" as={TextField} />
+                  <Button onClick={handleClose} style={{ position: 'absolute', right: '10px', top: '10px' }}>
+                    <CloseIcon style={{ color: 'black' }} />
+                  </Button>
+                  <Field style={{ margin: '40px 10px 10px 10px' }} type="text" name="title" label="Titulo" as={TextField} />
                   <ErrorMessage style={{ 'margin-left': '10px', 'color': 'red' }} name="title" component="div" />
                   <Field
                     style={{ margin: '10px' }}
@@ -306,9 +399,10 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
                     label="Description"
                     placeholder="Descrição"
                     as={TextField}
+                    rows={4}
                     multiline
                   />
-                  <LoadingButton style={{ margin: '10px' }} loading={loadingButton} type="submit" variant="contained" color="primary">Criar Task</LoadingButton>
+                  <LoadingButton style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '30px' }} loading={loadingButton} type="submit" variant="contained" color="primary">Criar Task</LoadingButton>
                 </Form>
 
               )}
@@ -323,66 +417,102 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
         >
           <Box sx={style}>
             <div>
+              <Button onClick={handleClose} style={{ position: 'absolute', right: '10px', top: '10px' }}>
+                <CloseIcon style={{ color: 'black' }} />
+              </Button>
               <h2>Titulo</h2>
               <p>{taskModal.title}</p>
               <h3>Descrição</h3>
+              {!editTask ? 
               <p>{taskModal.description != null ? taskModal.description : 'Sem descrição cadastrada'}</p>
-              <dvi style={{ display: 'flex', 'flex-direction': 'row', 'align-items': 'center' }}>
+                :
+                <TextField style={{ width: '100%' }}
+                  multiline
+                  type="text"
+                  value={newDescription}
+                  onChange={(e) => (setNewDescription(e.target.value))}
+                  rows={2}
+                  placeholder={taskModal.description}
+                />
+              }
+
+              <div style={{ display: 'flex', 'flex-direction': 'row', 'align-items': 'center' }}>
                 <h4>Data da criação:</h4>
                 <span style={{ 'margin': '0 0 0 5px' }}>{handleData(taskModal.created_at)}</span>
-              </dvi>
+              </div>
+              {!editTask ?
+                <LoadingButton onClick={() => setEditTask(true)} style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '30px' }} loading={loadingButton} variant="contained" color="primary">Editar Task</LoadingButton>
+                :
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <LoadingButton onClick={() => setEditTask(false)} style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '150px' }} loading={loadingButton} type="submit" variant="contained" color="primary">Cancelar</LoadingButton>
+                  <LoadingButton
+                    onClick={() => editDescription(taskModal, newDescription)}
+                    style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '30px' }}
+                    loading={loadingButton}
+                    type="submit"
+                    variant="contained"
+                    color="primary">
+                    Concluir
+                  </LoadingButton>
+                </div>
+              }
             </div>
           </Box>
         </Modal>
-
         <div className='home'>
-          <Paper className='Paper' elevation={3}>
-            <div className='headerPaper'>
-              <h2>
-                A iniciar ({pendingItens.length})
-              </h2>
+          <Paper className="Paper" elevation={3}>
+            <div className="headerPaper">
+              <h2>A iniciar ({list.pendingItens.length})</h2>
             </div>
             <ul>
-              {pendingItens.map((item, index) => (
+              {list.pendingItens.map((item, index) => (
                 <li key={index}>
-                  <div className='listPapers'>
-                    <span className='textTitle' onClick={() => handleOpenModalViwerTask(item)} >
+                  <div className="listPapers">
+                    <span className="textTitle" onClick={() => handleOpenModalViwerTask(item)}>
                       {item.title}
                     </span>
-                    <LoadingButton loading={loadingButton} onClick={() => handleMoveToDoingItens(item)}><ArrowCircleRightOutlinedIcon /></LoadingButton>
+                    <LoadingButton loading={loadingButton} onClick={() => handleMoveToDoingItens(item)}>
+                      <ArrowCircleRightOutlinedIcon />
+                    </LoadingButton>
                   </div>
                 </li>
               ))}
             </ul>
           </Paper>
-          <Paper className='Paper' elevation={3}>
-            <h2>Em Andamento ({doingItens.length})</h2>
+          <Paper className="Paper" elevation={3}>
+            <h2>Em Andamento ({list.doingItens.length})</h2>
             <ul>
-              {doingItens.map((item, index) => (
+              {list.doingItens.map((item, index) => (
                 <li key={index}>
-                  <div className='listPapers'>
-                    <span onClick={() => handleOpenModalViwerTask(item)} className='textTitle'>
+                  <div className="listPapers">
+                    <span onClick={() => handleOpenModalViwerTask(item)} className="textTitle">
                       {item.title}
                     </span>
                     <div>
-                      <LoadingButton loading={loadingButton} style={{ width: '5px' }} onClick={() => handleReturnToDoItens(item)}><ArrowCircleLeftOutlinedIcon /></LoadingButton>
-                      <LoadingButton loading={loadingButton} onClick={() => handleMoveToDoneItens(item)}><ArrowCircleRightOutlinedIcon /></LoadingButton>
+                      <LoadingButton loading={loadingButton} style={{ width: '5px' }} onClick={() => handleReturnToDoItens(item)}>
+                        <ArrowCircleLeftOutlinedIcon />
+                      </LoadingButton>
+                      <LoadingButton loading={loadingButton} onClick={() => handleMoveToDoneItens(item)}>
+                        <ArrowCircleRightOutlinedIcon />
+                      </LoadingButton>
                     </div>
                   </div>
                 </li>
               ))}
             </ul>
-          </Paper>
-          <Paper className='Paper' elevation={3}>
-            <h2>Concluidas ({doneItens.length})</h2>
+          </Paper>                
+          <Paper className="Paper" elevation={3}>
+            <h2>Concluídas ({list.doneItens.length})</h2>
             <ul>
-              {doneItens.map((item, index) => (
+              {list.doneItens.map((item, index) => (
                 <li key={index}>
-                  <div className='listPapers'>
-                    <span onClick={() => handleOpenModalViwerTask(item)} className='textTitle'>
+                  <div className="listPapers">
+                    <span onClick={() => handleOpenModalViwerTask(item)} className="textTitle">
                       {item.title}
                     </span>
-                    <LoadingButton loading={loadingButton} onClick={() => handleReturnToDoingItens(item)}><ArrowCircleLeftOutlinedIcon /></LoadingButton>
+                    <LoadingButton loading={loadingButton} onClick={() => handleReturnToDoingItens(item)}>
+                      <ArrowCircleLeftOutlinedIcon />
+                    </LoadingButton>
                     <LoadingButton loading={loadingButton} onClick={() => deletTask(item)}>
                       <RemoveCircleOutlineIcon />
                     </LoadingButton>

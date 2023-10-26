@@ -3,7 +3,8 @@ background-color: #4487ca;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  justify-content: center
+  justify-content: center;
+    color: white
 }
 .exitButton {
   color: black;

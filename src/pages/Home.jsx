@@ -20,25 +20,18 @@ const Home = () => {
     setOpen(false)
   }
 
-  const handleCloseError = () => {
-    setOpenError(false)
-  }
-
   const validationSchema = yup.object({
     email: yup
       .string('Enter your email')
       .email('Enter a valid email')
       .required('Email is required')
   });
-  console.log(apiLink)
   const singIn = (form) => {
     setLoadingButton(true)
     axios.post(`${apiLink}/login`, form)
       .then((response) => {
         const novaChave = 'jwtToken';
         form[novaChave] = response.data.jwtToken
-        console.log(form)
-        console.log('response.data', response.data)
         localStorage.setItem('id', response.data.id)
         localStorage.setItem('token', response.data.jwtToken)
         localStorage.setItem('email', response.data.email)
@@ -61,6 +54,7 @@ const Home = () => {
       })
       .catch((error) => {
         console.error('Erro:', error);
+        setOpenError(true)
         setLoadingButton(false)
       })
   }
@@ -135,7 +129,7 @@ const Home = () => {
               onSubmit={(values) => {
                 singUp(values)
               }}
-            >
+            >S
               {formik => (
                 <Form style={{ display: 'flex', flexDirection: 'column', alignSelf: 'center' }}>
                   <Field style={{ margin: '10px' }} type="text" name="email" label="Email" as={TextField} />
