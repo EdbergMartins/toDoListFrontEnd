@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import './Tasks.css';
 
-
 const Tasks = ({ loggedDate, updateLoggedData }) => {
   const [list, setList] = useState({
     pendingItens: [{}],
@@ -93,6 +92,7 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
         setOpenErrorModal(true)
       })
   }
+
 
   const deletTask = (task) => {
     const { id } = task
@@ -361,7 +361,7 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
             Adicionar Task
           </LoadingButton >
           <LoadingButton
-            style={{ marginRight: '26px' }}
+            style={{ position: 'absolute', top: '25px', right: '30px', boxShadow: 'none', backgroundColor: '#4487ca' }}
             loading={loadingButton}
             color='primary'
             variant="contained"
