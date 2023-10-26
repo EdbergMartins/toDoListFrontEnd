@@ -353,7 +353,7 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <LoadingButton
             style={{ marginLeft: '20px' }}
-            loading={loadingButton}
+            disabled={loadingButton}
             color='primary'
             variant="contained"
             onClick={handleOpen}
@@ -362,7 +362,7 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
           </LoadingButton >
           <LoadingButton
             style={{ position: 'absolute', top: '25px', right: '30px', boxShadow: 'none', backgroundColor: '#4487ca' }}
-            loading={loadingButton}
+            disabled={loadingButton}
             color='primary'
             variant="contained"
             onClick={logou}
@@ -402,7 +402,7 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
                     rows={4}
                     multiline
                   />
-                  <LoadingButton style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '30px' }} loading={loadingButton} type="submit" variant="contained" color="primary">Criar Task</LoadingButton>
+                  <LoadingButton style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '30px' }} disabled={loadingButton} type="submit" variant="contained" color="primary">Criar Task</LoadingButton>
                 </Form>
 
               )}
@@ -441,14 +441,14 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
                 <span style={{ 'margin': '0 0 0 5px' }}>{handleData(taskModal.created_at)}</span>
               </div>
               {!editTask ?
-                <LoadingButton onClick={() => setEditTask(true)} style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '30px' }} loading={loadingButton} variant="contained" color="primary">Editar Task</LoadingButton>
+                <LoadingButton onClick={() => setEditTask(true)} style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '30px' }} disabled={loadingButton} variant="contained" color="primary">Editar Task</LoadingButton>
                 :
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <LoadingButton onClick={() => setEditTask(false)} style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '150px' }} loading={loadingButton} type="submit" variant="contained" color="primary">Cancelar</LoadingButton>
+                  <LoadingButton onClick={() => setEditTask(false)} style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '150px' }} disabled={loadingButton} type="submit" variant="contained" color="primary">Cancelar</LoadingButton>
                   <LoadingButton
                     onClick={() => editDescription(taskModal, newDescription)}
                     style={{ margin: '10px', position: 'absolute', bottom: '20px', right: '30px' }}
-                    loading={loadingButton}
+                    disabled={loadingButton}
                     type="submit"
                     variant="contained"
                     color="primary">
@@ -471,7 +471,7 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
                     <span className="textTitle" onClick={() => handleOpenModalViwerTask(item)}>
                       {item.title}
                     </span>
-                    <LoadingButton loading={loadingButton} onClick={() => handleMoveToDoingItens(item)}>
+                    <LoadingButton disabled={loadingButton} onClick={() => handleMoveToDoingItens(item)}>
                       <ArrowCircleRightOutlinedIcon />
                     </LoadingButton>
                   </div>
@@ -489,10 +489,10 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
                       {item.title}
                     </span>
                     <div>
-                      <LoadingButton loading={loadingButton} style={{ width: '5px' }} onClick={() => handleReturnToDoItens(item)}>
+                      <LoadingButton disabled={loadingButton} style={{ width: '5px' }} onClick={() => handleReturnToDoItens(item)}>
                         <ArrowCircleLeftOutlinedIcon />
                       </LoadingButton>
-                      <LoadingButton loading={loadingButton} onClick={() => handleMoveToDoneItens(item)}>
+                      <LoadingButton disabled={loadingButton} onClick={() => handleMoveToDoneItens(item)}>
                         <ArrowCircleRightOutlinedIcon />
                       </LoadingButton>
                     </div>
@@ -510,10 +510,10 @@ const Tasks = ({ loggedDate, updateLoggedData }) => {
                     <span onClick={() => handleOpenModalViwerTask(item)} className="textTitle">
                       {item.title}
                     </span>
-                    <LoadingButton loading={loadingButton} onClick={() => handleReturnToDoingItens(item)}>
+                    <LoadingButton disabled={loadingButton} onClick={() => handleReturnToDoingItens(item)}>
                       <ArrowCircleLeftOutlinedIcon />
                     </LoadingButton>
-                    <LoadingButton loading={loadingButton} onClick={() => deletTask(item)}>
+                    <LoadingButton disabled={loadingButton} onClick={() => deletTask(item)}>
                       <RemoveCircleOutlineIcon />
                     </LoadingButton>
                   </div>
