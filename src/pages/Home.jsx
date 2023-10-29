@@ -117,7 +117,7 @@ const Home = () => {
         </Snackbar>
         <Box className='pageLogin'>
           <Paper className='formLogin'>
-            <div style={{ display: 'flex', width: '200PX', 'align-items': 'center', 'margin-bottom': '40px' }}>
+            <div style={{ display: 'flex', width: '200PX', 'align-items': 'center' }}>
               <Button>
                 <ArrowBackIcon onClick={() => setLoginViwer(true)} />
               </Button>
