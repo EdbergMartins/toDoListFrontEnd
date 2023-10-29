@@ -129,7 +129,7 @@ const Home = () => {
               onSubmit={(values) => {
                 singUp(values)
               }}
-            >S
+            >
               {formik => (
                 <Form style={{ display: 'flex', flexDirection: 'column', alignSelf: 'center' }}>
                   <Field style={{ margin: '10px' }} type="text" name="email" label="Email" as={TextField} />
