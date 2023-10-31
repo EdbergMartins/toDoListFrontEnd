@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# **ToDoList**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este projeto é uma Lista de Tarefas (To-Do List) desenvolvida como parte do enriquecimento do meu portfólio. Ele foi criado para demonstrar as habilidades técnicas em desenvolvimento front-end usando React.
 
-## Available Scripts
+A Lista de Tarefas é uma aplicação simples, porém eficaz, que permite aos usuários entrar em sua área logada, adicionar, concluir e excluir tarefas. Ela demonstra o uso de componentes React, manipulação de estado, gerenciamento de eventos e interações de usuário.
 
-In the project directory, you can run:
+Principais recursos do projeto:
 
-### `npm start`
+- Criar sua conta individual
+-   Adição de novas tarefas.
+-   Marcação de tarefas como concluídas.
+-   Remoção de tarefas da lista.
+- Edição de tarefas ja cadastradas
+-   Fácil organização das tarefas pendentes.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Este projeto serve como um exemplo prático das habilidades do desenvolvedor em criar interfaces de usuário interativas e responsivas usando uma das bibliotecas JavaScript mais populares, o React. Além disso, demonstra a capacidade de gerenciar o estado da aplicação de forma eficiente.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Observação: Este projeto é a parte front end de um projeto full stack, portanto para a parte do back end deve-se seguir o link do repositório a baixo:
+	
 
-### `npm test`
+    https://github.com/EdbergMartins/toDoListBackEnd
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## **Configuração das Variáveis de Ambiente**
 
-### `npm run build`
+Antes de começar a usar este projeto, certifique-se de configurar as variáveis de ambiente necessárias. O arquivo `.env.example` no repositório serve como um exemplo das variáveis que você precisa definir. Siga as etapas abaixo para configurar as variáveis de ambiente:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Faça uma cópia do arquivo `.env.example` e renomeie-a para `.env`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Abra o arquivo `.env` em um editor de codigo/texto.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Preencha as variáveis de ambiente com os valores apropriados. Certifique-se de fornecer os valores corretos para cada variável, de acordo com as necessidades do seu projeto.
 
-### `npm run eject`
+4. Salve o arquivo `.env` com as variáveis configuradas.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## **Instalação**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Siga as etapas abaixo para instalar as dependências do projeto e executá-lo localmente:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Clone o repositório para o seu computador.
+	
+		git clone https://github.com/EdbergMartins/toDoListFrontEnd.git
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. Navegue até o diretório do projeto.
+	
+		cd seu-projeto
 
-## Learn More
+3. Instale as dependências usando o npm.
+       
+       Com npm: npm install
+	   Com yarn: yarn install
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## **Uso**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Depois de configurar as variáveis de ambiente e instalar as dependências, você pode executar o projeto localmente. Use um dos seguintes comandos, dependendo do gerenciador de pacotes que você escolheu:
+	
+	Com npm: npm start
+	Com yarn: yarn start
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+O projeto será executado em `http://localhost:3000` por padrão. Você pode acessar essa URL no seu navegador para visualizar o aplicativo.
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
